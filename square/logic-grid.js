@@ -58,11 +58,12 @@ var map = {
     }
 };
 
-function Camera(map, width, height) {
+function Camera(map, width, height, radius) {
     this.x = 0;
     this.y = 0;
     this.width = width;
     this.height = height;
+    this.radius = radius;
     this.maxX = map.cols * map.tsize - width;
     this.maxY = map.rows * map.tsize - height;
 }
@@ -177,7 +178,7 @@ Game.init = function () {
     this.tileAtlas = Loader.getImage('tiles');
 
     this.hero = new Hero(map, 160, 160);
-    this.camera = new Camera(map, 192, 192);
+    this.camera = new Camera(map, 192, 192, 128);
     this.camera.follow(this.hero);
 };
 
@@ -212,15 +213,10 @@ Game._drawLayer = function (layer) {
             var middleY = r * map.tsize + (map.tsize / 2 )
 
             var a2 = Math.pow(this.hero.x - middleX, 2)
-            var b2 = Math.pow(this.hero.y - middleY, 2);
+            var b2 = Math.pow(this.hero.y - middleY, 2)
 
 
-
-            // console.log(this.camera.x, this.camera.y)
-
-
-
-            if (tile !== 0 && Math.sqrt(a2+b2) < 128) { // 0 => empty tile
+            if (tile !== 0 && Math.sqrt(a2+b2) < this.camera.radius) { // 0 => empty tile
                 this.ctx.drawImage(
                     this.tileAtlas, // image
                     (tile - 1) * map.tsize, // source x
