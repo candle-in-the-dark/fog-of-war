@@ -211,8 +211,8 @@ Game._drawLayer = function (layer) {
             var middleX = c * map.tsize + (map.tsize / 2 )
             var middleY = r * map.tsize + (map.tsize / 2 )
 
-            var a2 = Math.pow(this.camera.x - middleX, 2)
-            var b2 = Math.pow(this.camera.y - middleY, 2);
+            var a2 = Math.pow(this.hero.x - middleX, 2)
+            var b2 = Math.pow(this.hero.y - middleY, 2);
 
 
 
@@ -220,7 +220,7 @@ Game._drawLayer = function (layer) {
 
 
 
-            if (tile !== 0 && Math.sqrt(a2+b2) < 192) { // 0 => empty tile
+            if (tile !== 0 && Math.sqrt(a2+b2) < 128) { // 0 => empty tile
                 this.ctx.drawImage(
                     this.tileAtlas, // image
                     (tile - 1) * map.tsize, // source x
