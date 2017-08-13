@@ -76,12 +76,13 @@ Camera.prototype.follow = function (sprite) {
 Camera.prototype.update = function () {
     // assume followed sprite should be placed at the center of the screen
     // whenever possible
-    this.following.screenX = this.width / 2;
-    this.following.screenY = this.height / 2;
+    // this.following.screenX = this.width / 2;
+    // this.following.screenY = this.height / 2;
 
     // make the camera follow the sprite
     this.x = this.following.x - this.width / 2;
     this.y = this.following.y - this.height / 2;
+
     // clamp values
     this.x = Math.max(0, Math.min(this.x, this.maxX));
     this.y = Math.max(0, Math.min(this.y, this.maxY));
@@ -176,7 +177,7 @@ Game.init = function () {
     this.tileAtlas = Loader.getImage('tiles');
 
     this.hero = new Hero(map, 160, 160);
-    this.camera = new Camera(map, 512, 512);
+    this.camera = new Camera(map, 192, 192);
     this.camera.follow(this.hero);
 };
 
@@ -194,19 +195,32 @@ Game.update = function (delta) {
 };
 
 Game._drawLayer = function (layer) {
-    var startCol = Math.floor(this.camera.x / map.tsize);
-    var endCol = startCol + (this.camera.width / map.tsize);
-    var startRow = Math.floor(this.camera.y / map.tsize);
-    var endRow = startRow + (this.camera.height / map.tsize);
-    var offsetX = -this.camera.x + startCol * map.tsize;
-    var offsetY = -this.camera.y + startRow * map.tsize;
+    var startCol = 0;
+    var endCol = map.cols;
+    var startRow = 0;
+    var endRow = map.rows;
+    var offsetX = 0;//-this.camera.x + startCol * map.tsize;
+    var offsetY = 0;//-this.camera.y + startRow * map.tsize;
 
     for (var c = startCol; c <= endCol; c++) {
         for (var r = startRow; r <= endRow; r++) {
             var tile = map.getTile(layer, c, r);
             var x = (c - startCol) * map.tsize + offsetX;
             var y = (r - startRow) * map.tsize + offsetY;
-            if (tile !== 0) { // 0 => empty tile
+
+            var middleX = c * map.tsize + (map.tsize / 2 )
+            var middleY = r * map.tsize + (map.tsize / 2 )
+
+            var a2 = Math.pow(this.camera.x - middleX, 2)
+            var b2 = Math.pow(this.camera.y - middleY, 2);
+
+
+
+            // console.log(this.camera.x, this.camera.y)
+
+
+
+            if (tile !== 0 && Math.sqrt(a2+b2) < 192) { // 0 => empty tile
                 this.ctx.drawImage(
                     this.tileAtlas, // image
                     (tile - 1) * map.tsize, // source x
@@ -221,6 +235,8 @@ Game._drawLayer = function (layer) {
             }
         }
     }
+
+
 };
 
 Game._drawGrid = function () {
@@ -252,11 +268,11 @@ Game.render = function () {
     // draw main character
     this.ctx.drawImage(
         this.hero.image,
-        this.hero.screenX - this.hero.width / 2,
-        this.hero.screenY - this.hero.height / 2);
+        this.hero.x - this.hero.width / 2,
+        this.hero.y - this.hero.height / 2);
 
     // draw map top layer
     this._drawLayer(1);
 
-    this._drawGrid();
+    // this._drawGrid();
 };
