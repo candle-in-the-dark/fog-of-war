@@ -3,31 +3,31 @@ var map = {
     rows: 12,
     tsize: 64,
     layers: [[
-        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-        3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 3,
-        3, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 2, 2, 1, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3,
-        3, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 3,
-        3, 3, 3, 1, 1, 2, 3, 3, 3, 3, 3, 3
+        3, 1, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        3, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3,
+        3, 3, 3, 3, 1, 1, 1, 3, 1, 3, 1, 1,
+        3, 1, 3, 1, 1, 3, 3, 3, 1, 3, 1, 3,
+        3, 1, 3, 1, 3, 3, 1, 1, 1, 3, 1, 3,
+        3, 1, 3, 1, 1, 3, 1, 3, 3, 3, 1, 3,
+        3, 1, 3, 3, 1, 3, 1, 1, 1, 1, 1, 3,
+        3, 1, 1, 1, 1, 3, 3, 3, 1, 3, 1, 3,
+        3, 1, 3, 1, 1, 1, 1, 3, 1, 3, 1, 3,
+        3, 1, 3, 3, 3, 1, 3, 3, 3, 3, 1, 3,
+        3, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 3,
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3
     ], [
-        4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-        4, 4, 4, 0, 5, 4, 4, 4, 4, 4, 4, 4,
-        4, 4, 4, 0, 0, 3, 3, 3, 3, 3, 3, 3
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     ]],
     getTile: function (layer, col, row) {
         return this.layers[layer][row * map.cols + col];
@@ -134,10 +134,12 @@ Hero.prototype._collide = function (dirx, diry) {
     var row, col;
     // -1 in right and bottom is because image ranges from 0..63
     // and not up to 64
-    var left = this.x - this.width / 2;
-    var right = this.x + this.width / 2 - 1;
-    var top = this.y - this.height / 2;
-    var bottom = this.y + this.height / 2 - 1;
+    const collideHeight = this.height - 16;
+    const collideWidth = this.width - 16;
+    var left = this.x - collideWidth / 2;
+    var right = this.x + collideWidth/ 2 - 1;
+    var top = this.y - collideHeight / 2;
+    var bottom = this.y + collideHeight / 2 - 1;
 
     // check for collisions on sprite sides
     var collision =
@@ -149,26 +151,26 @@ Hero.prototype._collide = function (dirx, diry) {
 
     if (diry > 0) {
         row = this.map.getRow(bottom);
-        this.y = -this.height / 2 + this.map.getY(row);
+        this.y = -collideHeight / 2 + this.map.getY(row);
     }
     else if (diry < 0) {
         row = this.map.getRow(top);
-        this.y = this.height / 2 + this.map.getY(row + 1);
+        this.y = collideHeight / 2 + this.map.getY(row + 1);
     }
     else if (dirx > 0) {
         col = this.map.getCol(right);
-        this.x = -this.width / 2 + this.map.getX(col);
+        this.x = -collideWidth / 2 + this.map.getX(col);
     }
     else if (dirx < 0) {
         col = this.map.getCol(left);
-        this.x = this.width / 2 + this.map.getX(col + 1);
+        this.x = collideWidth / 2 + this.map.getX(col + 1);
     }
 };
 
 Game.load = function () {
     return [
-        Loader.loadImage('tiles', '../assets/tiles.png'),
-        Loader.loadImage('hero', '../assets/character.png')
+        Loader.loadImage('tiles', '../assets/goofin.png'),
+        Loader.loadImage('hero', '../assets/icon.png')
     ];
 };
 
@@ -177,7 +179,7 @@ Game.init = function () {
         [Keyboard.LEFT, Keyboard.RIGHT, Keyboard.UP, Keyboard.DOWN]);
     this.tileAtlas = Loader.getImage('tiles');
 
-    this.hero = new Hero(map, 160, 160);
+    this.hero = new Hero(map, 96, 16);
     this.camera = new Camera(map, 192, 192, 128);
     this.camera.follow(this.hero);
 };
